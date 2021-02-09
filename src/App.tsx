@@ -1,8 +1,10 @@
 import React, {useEffect} from 'react';
-import logo from './logo.svg';
+import {  Route, Switch, } from 'react-router-dom'
 import './App.css';
 import MainLayout from "./component/MainLayout";
 import News from "./component/News";
+import ProfileContainer from "./component/ProfileContainer";
+import Followers from "./component/Followers";
 
 const App: React.FC = () => {
     useEffect(()=>{
@@ -10,7 +12,21 @@ const App: React.FC = () => {
     },[])
     return (
         <MainLayout>
-            <News/>
+            <Switch>
+                <Route exact path='/'
+                       render={() =>  <News/>}/>
+
+                <Route path='/profile/:userId?'
+                       render={() => <ProfileContainer/>}/>
+
+                <Route path='/followers'
+                       render={() => <Followers/> }/>
+
+                <Route path='*'
+                       render={() => <div>404 NOT FOUND</div>}/>
+            </Switch>
+
+
         </MainLayout>
     );
 }

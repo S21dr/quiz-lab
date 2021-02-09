@@ -27,8 +27,10 @@ const HeaderApp: React.FC = () => {
     }
     const login = ()=>{
         const user:IUser={
-            id:Date.now(),
-            name:input
+            id:Date.now().toString(),
+            name:input,
+            sub:[],
+            followers:[]
         }
         if (!users){
             let newUsers = [user]

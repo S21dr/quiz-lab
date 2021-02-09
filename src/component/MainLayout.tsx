@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import HeaderApp from "./HeaderApp";
-
+import {Link}  from 'react-router-dom';
 const {  Content, Footer, Sider } = Layout;
 
 const MainLayout: React.FC = ({children})=> {
@@ -22,16 +22,13 @@ const MainLayout: React.FC = ({children})=> {
                 <div className="logo" >Quiz Lab</div>
                 <Menu  mode="inline" defaultSelectedKeys={['1']} style={{paddingTop:'24px'}}>
                     <Menu.Item key="1" icon={<UserOutlined />}>
-                        Новости
+                        <Link to={'/'}>Новости</Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-                        Профиль
+                        <Link to={'/profile'}>Профиль</Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UploadOutlined />}>
-                        Подписчики
-                    </Menu.Item>
-                    <Menu.Item key="4" icon={<UserOutlined />}>
-                        nav 4
+                        <Link to={'/followers'}>Подписчики</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

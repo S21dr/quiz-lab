@@ -22,7 +22,6 @@ const NewPost: React.FC = () => {
         let content = textArea.trim()
         if (authUser && content.length) {
             const newPost: IPost = {
-                name: authUser.name,
                 content,
                 likeId: [],
                 parentId: authUser.id
