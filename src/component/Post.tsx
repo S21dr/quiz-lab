@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAuthorized, getPosts, getUsers} from "./select";
 import {Link} from 'react-router-dom';
 import {HeartTwoTone, DeleteOutlined} from "@ant-design/icons";
-import {Button} from "antd";
 
 const Post: React.FC<IPost> = (props) => {
     const dispatch = useDispatch()
