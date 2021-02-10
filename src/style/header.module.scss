@@ -1,12 +1,23 @@
-.header{
+.header {
   height: 64px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   background-color: #ffffff;
 
+  .wrapLogin {
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      margin: 0 20px;
+    }
+  }
 }
-.input{
+
+.input {
   display: inline-block;
   margin-bottom: 20px;
 }

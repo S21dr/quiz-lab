@@ -19,7 +19,7 @@ const ProfileContainer: React.FC = () => {
     let {userId} = useParams<ParamTypes>();
     if (!userId){
         if (user){
-            userId = user.id
+            userId = user
         }else {
             history.push('/')
             dispatch(actionsAuth.setModalLogin(true))

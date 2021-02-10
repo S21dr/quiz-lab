@@ -1,15 +1,13 @@
 import React, {useEffect} from 'react';
 import {  Route, Switch, } from 'react-router-dom'
-import './App.css';
+import "./style/global.scss"
 import MainLayout from "./component/MainLayout";
 import News from "./component/News";
 import ProfileContainer from "./component/ProfileContainer";
 import Followers from "./component/Followers";
+import NewPost from "./component/NewPost";
 
 const App: React.FC = () => {
-    useEffect(()=>{
-        console.log(localStorage)
-    },[])
     return (
         <MainLayout>
             <Switch>
@@ -26,7 +24,7 @@ const App: React.FC = () => {
                        render={() => <div>404 NOT FOUND</div>}/>
             </Switch>
 
-
+            <NewPost/>
         </MainLayout>
     );
 }

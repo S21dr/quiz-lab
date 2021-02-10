@@ -1,45 +1,45 @@
-import React from 'react';
-import { Layout, Menu } from 'antd';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
+import {Layout, Menu} from 'antd';
+import {TeamOutlined, UserOutlined, HomeOutlined} from '@ant-design/icons';
 import HeaderApp from "./HeaderApp";
-import {Link}  from 'react-router-dom';
-const {  Content, Footer, Sider } = Layout;
+import {Link, useLocation} from 'react-router-dom';
 
-const MainLayout: React.FC = ({children})=> {
+const {Content, Footer, Sider} = Layout;
 
+const MainLayout: React.FC = ({children}) => {
+    let location = useLocation();
+    useEffect(() => {
+        setSelectedKey([`${location.pathname}`])
+    }, [location])
+    const initSelectedKey = [location.pathname]
+    const [selectedKey, setSelectedKey] = useState(initSelectedKey)
     return (
-        <Layout style={{minHeight:'100vh'}}>
+        <Layout style={{minHeight: '100vh'}}>
             <Sider
                 breakpoint="lg"
                 collapsedWidth="0"
-                onBreakpoint={broken => {
-                    console.log(broken);
-                }}
-                onCollapse={(collapsed, type) => {
-                    console.log(collapsed, type);
-                }}
             >
-                <div className="logo" >Quiz Lab</div>
-                <Menu  mode="inline" defaultSelectedKeys={['1']} style={{paddingTop:'24px'}}>
-                    <Menu.Item key="1" icon={<UserOutlined />}>
+                <div className="logo">Quiz Lab</div>
+                <Menu mode="inline" selectedKeys={selectedKey} style={{paddingTop: '24px'}}>
+                    <Menu.Item key="/" icon={<HomeOutlined/>}>
                         <Link to={'/'}>Новости</Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<VideoCameraOutlined />}>
+                    <Menu.Item key="/profile" icon={<UserOutlined/>}>
                         <Link to={'/profile'}>Профиль</Link>
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<UploadOutlined />}>
+                    <Menu.Item key="/followers" icon={<TeamOutlined />}>
                         <Link to={'/followers'}>Подписчики</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>
             <Layout>
                 <HeaderApp/>
-                <Content style={{ margin: '24px 16px 0' }}>
-                    <div className="site-layout-background" style={{ padding: 24, minHeight: '100%', }}>
+                <Content style={{margin: '24px 16px 0'}}>
+                    <div className="site-layout-background" style={{padding: 24, minHeight: '100%',}}>
                         {children}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>©2021 Created by Stepanov Dmitry</Footer>
+                <Footer style={{textAlign: 'center'}}>©2021 Created by Stepanov Dmitry</Footer>
             </Layout>
         </Layout>
     );

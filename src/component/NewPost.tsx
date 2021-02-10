@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Modal, Button, Input} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
-import {getAuthorized, getModalNewPost} from "./select";
+import {getAuthorized, getModalNewPost, getPosts} from "./select";
 import {actionsAuth} from "../store/auth-reducer";
 import {actionsLStorage, IPost} from "../store/lStorage";
 
@@ -11,29 +11,33 @@ const NewPost: React.FC = () => {
     const dispatch = useDispatch()
     const isModalVisible = useSelector(getModalNewPost)
     const [textArea, setTextArea] = useState('')
-    const onChangeTextArea = (e:any) =>{
+    const onChangeTextArea = (e: any) => {
         setTextArea(e.target.value)
     }
     const handleCancel = () => {
         dispatch(actionsAuth.setModalNewPost(false))
     }
+    const posts = useSelector(getPosts)
     const authUser = useSelector(getAuthorized)
     const addPost = () => {
         let content = textArea.trim()
         if (authUser && content.length) {
             const newPost: IPost = {
+                idPost:Date.now().toString(),
                 content,
                 likeId: [],
-                parentId: authUser.id
+                parentId: authUser
             }
-            let lSPosts = localStorage.getItem('posts');
-            localStorage.setItem('posts',JSON.stringify(lSPosts?[...JSON.parse(lSPosts),newPost]:[newPost]) );
+
             dispatch(actionsLStorage.setPost(newPost))
             dispatch(actionsAuth.setModalNewPost(false))
+            localStorage.setItem('posts', JSON.stringify([...posts,newPost]));
         }
+        setTextArea('')
     }
     return (
-        <Modal title="Basic Modal" visible={isModalVisible} onOk={addPost} okText={'Создать пост'}
+        <Modal  visible={isModalVisible} onOk={addPost} okText={'Создать пост'}
+                cancelText={'Отмена'}
                onCancel={handleCancel}>
             <h2>Новый пост</h2>
             <p>Введите новый пост:</p>

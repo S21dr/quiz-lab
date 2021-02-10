@@ -1,0 +1,120 @@
+.tabWrap{
+  position: relative;
+}
+.addPost{
+  position: absolute;
+  right: 0;
+  top: 10px;
+}
+.post{
+  padding: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 3px 5px rgba(57, 63, 72, 0.1);
+  transition: all 0.3s;
+  &:hover{
+    box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+  }
+  .title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .actionPost{
+      display: flex;
+      align-items: center;
+      .delete{
+        margin-left: 10px;
+        cursor: pointer;
+      }
+      .activeLike{
+        path{
+          fill: red;
+        }
+      }
+      &>span,&>div{
+        transition: all 0.3s;
+        &:hover{
+          transform: scale(1.2);
+        }
+      }
+      &>span{
+        &>svg{
+          &:hover{
+            path{
+              fill: red;
+            }
+          }
+
+        }
+      }
+    }
+  }
+  .liked{
+    a:not(:last-child){
+      margin-right: 4px;
+    }
+  }
+}
+.profile{
+  .editName{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    span{
+      margin-left: 10px;
+      font-size: 26px;
+    }
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .profileInfo{
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    &>span{
+      height: 100px;
+      width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    &>div{
+      margin-left: 100px;
+    }
+  }
+  .title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+}
+.followers{
+
+  .item{
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 500px;
+    align-items: center;
+    box-shadow: 0 3px 5px rgba(57, 63, 72, 0.1);
+    transition: all 0.3s;
+    &:hover{
+      box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    }
+    a{
+      font-size: 24px;
+      margin-right: 20px;
+    }
+  }
+}
+.link{
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover{
+    color: #1890ff;
+    text-decoration: underline;
+  }
+}

@@ -1,41 +1,56 @@
 import React from 'react';
 import {actionsLStorage, IPost} from "../store/lStorage";
 import {useDispatch, useSelector} from "react-redux";
-import {getAuthorized, getUsers} from "./select";
+import {getAuthorized, getPosts, getUsers} from "./select";
 import {Link} from 'react-router-dom';
-import {HeartTwoTone} from "@ant-design/icons";
-import {actionsAuth} from "../store/auth-reducer";
+import {HeartTwoTone, DeleteOutlined} from "@ant-design/icons";
+import {Button} from "antd";
 
 const Post: React.FC<IPost> = (props) => {
-    const dispatch =useDispatch()
+    const dispatch = useDispatch()
     const user = useSelector(getAuthorized)
     const users = useSelector(getUsers)
     let name = users.find(el => el.id === props.parentId)
     let liked = props.likeId.map(e => {
         return users.find(el => el.id === e)
     })
-    const like = () =>{
-        if (user)
-        dispatch(actionsLStorage.setLikePost(user.id,props.parentId))
+    const posts = useSelector(getPosts)
+    const like = () => {
+        if (user) {
+            dispatch(actionsLStorage.setLikePost(user, props.idPost))
+            localStorage.setItem('posts', JSON.stringify(posts))
+        }
     }
     return (
-        <div>
-            <h2>{name ? name.name : null}</h2>
+        <div className={'post'}>
+            <div className={'title'}>
+                <h2>{name ? <Link to={`/profile/${name.id}`}>{name.name}</Link> : null}</h2>
+                <div className={'actionPost'}>
+                    {
+                        user ? <HeartTwoTone className={props.likeId.find(el => el === user) ? 'activeLike' : ''}
+                                             onClick={like}/> : null
+                    }
+                    {
+                        user === props.parentId ?
+                            <div className={'delete'} onClick={() => {
+                                dispatch(actionsLStorage.deletePost(props.idPost))
+                                localStorage.setItem('posts', JSON.stringify(posts.filter(el=>el.idPost !== props.idPost)))
+                            }}>
+                                <DeleteOutlined/>
+                            </div>
+                            : null
+                    }
+                </div>
+            </div>
             <p>{props.content}</p>
-            {
-                props.likeId.length ? <div>
-                    <span>Понравилось: {
+            <div>
+                    <span className={'liked'}>Понравилось: {props.likeId.length ?
                         liked.map((el, i) => {
                             if (el)
                                 return <Link to={`/profile/${el.id}`} key={i}>{el.name}</Link>
-                        })
+                        }) : '0'
                     }</span>
-                </div> : null
-            }
-            {
-               user? <HeartTwoTone onClick={like}/>:null
-            }
-
+            </div>
         </div>
     );
 }

@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAuthorized, getModalLogin, getUsers} from "./select";
 import {actionsAuth} from "../store/auth-reducer";
 import {actionsLStorage, IUser} from "../store/lStorage";
+import {Link,} from 'react-router-dom';
 
 const HeaderApp: React.FC = () => {
     const dispatch = useDispatch()
@@ -25,62 +26,62 @@ const HeaderApp: React.FC = () => {
         str = str.trim()
         setInput(str)
     }
-    const login = ()=>{
-        const user:IUser={
-            id:Date.now().toString(),
-            name:input,
-            sub:[],
-            followers:[]
+    const login = () => {
+        const user: IUser = {
+            id: Date.now().toString(),
+            name: input,
+            sub: [],
+            followers: []
         }
-        if (!users){
-            let newUsers = [user]
-            localStorage.setItem('users',JSON.stringify(newUsers) );
-            dispatch(actionsLStorage.setUser(newUsers))
-            localStorage.setItem('authorized',JSON.stringify(user) );
-            dispatch(actionsLStorage.setAuthorized(user))
 
-        }else {
-            let item =  users.find(el=>el.name == input)
-            if (!item){
-                localStorage.setItem('users',JSON.stringify([...users,user]) );
-                dispatch(actionsLStorage.setUser([...users,user]))
-                localStorage.setItem('authorized',JSON.stringify(user) );
-                dispatch(actionsLStorage.setAuthorized(user))
+        let item = users.find(el => el.name == input)
+        if (!item) {
+            localStorage.setItem('users', JSON.stringify([...users, user]));
+            dispatch(actionsLStorage.setUser([...users, user]))
+            localStorage.setItem('authorized', JSON.stringify(user.id));
+            dispatch(actionsLStorage.setAuthorized(user.id))
 
-            }else {
-                localStorage.setItem('authorized',JSON.stringify(item) );
-                dispatch(actionsLStorage.setAuthorized(item))
-
-            }
+        } else {
+            localStorage.setItem('authorized', JSON.stringify(item.id))
+            dispatch(actionsLStorage.setAuthorized(item.id))
         }
         setInput('')
         dispatch(actionsAuth.setModalLogin(false))
     }
-    const logout = () =>{
-        localStorage.setItem('authorized',JSON.stringify({}) );
-        dispatch(actionsLStorage.setAuthorized(null ))
+    const logout = () => {
+        localStorage.setItem('authorized', '');
+        dispatch(actionsLStorage.setAuthorized(''))
     }
+    let authUser = users.find(el => el.id === authorized)
     return (
         <header className={s.header}>
             <div>
-                <UserOutlined/>
-                {
-                    authorized?
-                        <>
-                            <span>{authorized.name}</span>
-                            <Button onClick={logout}  type={"text"}>Выйти</Button>
-                        </>
-                        :<>
-                            <Button onClick={openModal} type={"text"}>Войти</Button>
-                        </>
-                }
+                <div className={s.wrapLogin}>
+                    {
+                        authorized ?
+                            <>
+                                <div>
+                                    <UserOutlined/>
+                                    {authUser ?
+                                        <Link to={`/profile/${authUser.id}`}>{authUser.name}</Link> : ''}
+                                </div>
+                                <Button onClick={logout} type={"text"}>Выйти</Button>
+                            </>
 
+                            : <>
+                                <UserOutlined/>
+                                <Button onClick={openModal} type={"text"}>Войти</Button>
+                            </>
+                    }
+                </div>
 
             </div>
             <Modal visible={isModalVisible} onCancel={handleCancel} footer={false}>
                 <h2>Введите имя:</h2>
-                <Input placeholder={'Имя'} className={s.input} value={input} onChange={changeInput} onPressEnter={login}/>
-                <Button onClick={login}   disabled={input.length<3} type={'primary'}>Продолжить</Button>
+                <Input placeholder={'Имя'} className={s.input} value={input} onChange={changeInput}
+                       maxLength={12}
+                       onPressEnter={login}/>
+                <Button onClick={login} disabled={input.length < 3} type={'primary'}>Продолжить</Button>
             </Modal>
         </header>
     );
